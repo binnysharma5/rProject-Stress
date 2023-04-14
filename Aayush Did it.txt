@@ -25,7 +25,7 @@ Actual
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			   Perceptron and Multilayer Perceptron neural networks
+			   Perceptron and Multilayer Perceptron neural networks aka MLPs
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -77,7 +77,7 @@ Multilayer Perceptron Confusion Matrix:
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				Support Vector Machine (SVM) classifier
+				          Say Valar Morghulis
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  
 from sklearn.model_selection import train_test_split
@@ -113,7 +113,7 @@ print(conf_matrix)
  [ 0  0  0  0  0]]
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-					 RNN
+					       Really Notty Noddy
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 import pandas as pd
