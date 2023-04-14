@@ -1,0 +1,169 @@
+import pandas as pd
+import numpy as np
+
+# Load the data into a pandas dataframe
+data = pd.read_csv('Stress.csv')
+
+# Define the actual and predicted labels
+actual_labels = data['Levels']
+predicted_labels = pd.cut(data['Score'], bins=[0, 10, 20, 30, 40, 50], labels=[1, 2, 3, 4, 5])
+
+# Create the confusion matrix
+confusion_matrix = pd.crosstab(actual_labels, predicted_labels, rownames=['Actual'], colnames=['Predicted'])
+
+# Display the matrix
+print(confusion_matrix)
+
+
+Predicted   1   2   3  4  5
+Actual
+1          88  63   0  0  0
+2           0  59   0  0  0
+3           0  21  36  0  0
+4           0   0  34  2  0
+5           0   0   0  6  1
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+							Perceptron and Multilayer Perceptron neural networks
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import Perceptron
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import confusion_matrix
+
+# Load the data
+data = pd.read_csv("Stress.csv")
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(data.iloc[:, :-1], data.iloc[:, -1], test_size=0.3, random_state=42)
+
+# Create and train the Perceptron model
+perceptron_model = Perceptron()
+perceptron_model.fit(X_train, y_train)
+
+# Create and train the Multilayer Perceptron model
+mlp_model = MLPClassifier(hidden_layer_sizes=(10,), max_iter=1000)
+mlp_model.fit(X_train, y_train)
+
+# Make predictions on the testing set
+perceptron_preds = perceptron_model.predict(X_test)
+mlp_preds = mlp_model.predict(X_test)
+
+# Generate confusion matrices for both models
+perceptron_cm = confusion_matrix(y_test, perceptron_preds, labels=[1, 2, 3, 4, 5])
+mlp_cm = confusion_matrix(y_test, mlp_preds, labels=[1, 2, 3, 4, 5])
+
+# Print the confusion matrices
+print("Perceptron Confusion Matrix:")
+print(perceptron_cm)
+print("Multilayer Perceptron Confusion Matrix:")
+print(mlp_cm)
+
+
+Perceptron Confusion Matrix:
+[[46  5  2  0  0]
+ [ 3 11  6  0  0]
+ [ 0  7  9  0  0]
+ [ 0  4  7  0  0]
+ [ 0  0  1  0  0]]
+Multilayer Perceptron Confusion Matrix:
+[[53  0  0  0  0]
+ [ 4  9  7  0  0]
+ [ 0  3 10  3  0]
+ [ 0  0  2  9  0]
+ [ 0  0  0  1  0]]
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+							Support Vector Machine (SVM) classifier
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import confusion_matrix
+
+import pandas as pd
+
+# Load dataset
+df = pd.read_csv('Stress.csv')
+
+# Split data into train and test sets
+X = df.iloc[:, :-1]
+y = df.iloc[:, -1]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train SVM classifier
+clf = SVC(kernel='rbf', random_state=42)
+clf.fit(X_train, y_train)
+
+# Make predictions on test set
+y_pred = clf.predict(X_test)
+
+# Create confusion matrix
+conf_matrix = confusion_matrix(y_test, y_pred, labels=[1, 2, 3, 4, 5])
+print(conf_matrix)
+
+
+[[35  0  0  0  0] 
+ [ 0 11  0  0  0] 
+ [ 0  0 14  0  0] 
+ [ 0  0  0  7  0] 
+ [ 0  0  0  0  0]]
+ 
+ 
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+							                Cartoon Neural Network
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ import pandas as pd
+import numpy as np
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D
+
+# Load the dataset
+data = pd.read_csv("Stress.csv")
+X = data.drop("Levels", axis=1).values
+y = data["Levels"].values
+
+# Split the dataset into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Reshape the data to 4D arrays for CNN input
+X_train = X_train.reshape(-1, 5, 5, 1)
+X_test = X_test.reshape(-1, 5, 5, 1)
+
+# Define the CNN model
+model = Sequential()
+model.add(Conv2D(32, (3, 3), activation="relu", input_shape=(5, 5, 1)))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation="relu"))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation="relu"))
+model.add(Flatten())
+model.add(Dense(64, activation="relu"))
+model.add(Dense(4, activation="softmax"))
+
+# Compile the model
+model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
+
+# Train the model
+model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
+
+# Make predictions on the test set
+y_pred = model.predict_classes(X_test)
+
+# Generate a confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+print("CNN Confusion Matrix:")
+print(cm)
+
+
+
+
+
